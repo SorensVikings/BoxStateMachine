@@ -1,14 +1,14 @@
 
-#define debounceDelayMs 50
+#define delayTime 50
 
 
 //RGB LED mappings:
-int red = 10;
-int green = 7;
-int blue = 7;
+int red = 11;
+int green = 8;
+int blue = 3;
 
 //Asign solenoid to a pin
-int solenoid = ?;
+int solenoid = 7;
 
 //bool to check if box is open so that the solenoid doesn't hammer away
 bool isBoxOpen = false;
@@ -24,9 +24,7 @@ enum boxState{
   FIVE
 };
 
-//one instance for each box:
-boxState
-
+boxState box;
 
 // 1 min = 60000 milliseconds
 //time the light will be active
@@ -38,58 +36,154 @@ void setup(){
 
 //I/O setup:
 pinMode(solenoid, OUTPUT);
+pinMode(red, OUTPUT);
+pinMode(green, OUTPUT);
+pinMode(blue, OUTPUT);
 }
 
 
 void loop(){
-
-  delay(debounceDelayMs);
+  
+  digitalWrite(7, HIGH);
+  
+  delay(5000);
   
   //update the state machine
-  switchState();
-  
+  updateBoxState();  
   
   //First toilet
-  switch(boxsState){
+  switch(box){
         //state ZERO is default state, so it should just set the box as closed so it can be openened at any time.
          case ZERO:
-            isBoxOpen = false;
-            break:
+            break;
             
         case ONE:
-            isBoxOpen = false;
-            if (!isBoxOpen) openBox;
-            isBoxOpen = true;
-            break:
+            if (!isBoxOpen) openBox();
+            break;
             
         case TWO:
-            break:
+            if (!isBoxOpen) openBox();
+            greenLightOn();
+            break;
             
         case THREE:
-            break:
+            if (!isBoxOpen) openBox();
+            flashGreen();
+            break;
             
         case FOUR:
-            break:
+            if (!isBoxOpen) openBox();
+            flashGreen();
+            flashRed();
+            break;
             
         case FIVE:
-            break:
+            break;
+            
+        
 
   	}
+}
+
+
+
+void waitForBoxClose() {
+ 
+  bool wait = true;
+  
+  while(wait) {
+   
+   
+    
+  }
+ 
+  
 }
 
 
 //fire up the solenoid, to open the box
 void openBox(){
   digitalWrite(solenoid, HIGH);
+  delay(delayTime);
+  digitalWrite(solenoid, LOW);
+  
+}
+
+
+void updateBoxState() {
+  
+    switchState(2);
+
   
 }
 
 void switchState(int i){
-  if(i == 0) boxState = ZERO;
-  if(i == 1) boxState = ONE;
-  if(i == 2) boxState = TWO;
-  if(i == 3) boxState = THREE;
-  if(i == 4) boxState = FOUR;
-  if(i == 5) boxState = FIVE;
+  if(i == 0) box = ZERO;
+  if(i == 1) box = ONE;
+  if(i == 2) box = TWO;
+  if(i == 3) box = THREE;
+  if(i == 4) box = FOUR;
+  if(i == 5) box = FIVE;
+  
+  
 }
 
+
+void flashRed(){
+  digitalWrite(red, HIGH);
+  delay(3000);
+  digitalWrite(red, LOW);
+}
+
+void flashGreen(){
+  digitalWrite(green, HIGH);
+  delay(3000);
+  digitalWrite(green, LOW);
+}
+
+
+void redLightOn() {
+
+    digitalWrite(red, HIGH);
+
+}
+
+
+
+void redLightOff() {
+
+    digitalWrite(red, LOW);
+
+}
+
+
+
+void greenLightOn() {
+
+    digitalWrite(green, HIGH);
+
+}
+
+
+
+void greenLightOff() {
+
+    digitalWrite(green, HIGH);
+
+}
+
+
+
+
+void blueLightOn() {
+
+    digitalWrite(blue, HIGH);
+
+}
+
+
+void blueLightOff() {
+
+    digitalWrite(blue, LOW);
+
+}
