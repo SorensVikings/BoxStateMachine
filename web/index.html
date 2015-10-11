@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+        <script src="sketch.js" type=text/javascript ></script>
+    
+        <link rel="stylesheet" type="text/css" href="style.css">
+        <title>Kaffe Klubben</title>
+    </head>
+
+    <body>
+                <div class="tools">
+            <!-- Farver -->
+    		<a href="#colors_sketch" data-color="#000000" title="Black"><img src="knapper/black.png" alt="Black"/></a>
+    		<a href="#colors_sketch" data-color="#E86C5D" title="Red"><img src="knapper/red.png" alt="Red"/></a>
+            <a href="#colors_sketch" data-color="#68FFBD" title="Green"><img src="knapper/green.png" alt="Green"/></a>
+            <a href="#colors_sketch" data-color="#6E9BE8" title="Blue"><img src="knapper/blue.png" alt="Blue"/></a>
+            <a href="#colors_sketch" data-color="#FFDD94" title="Yellow"><img src="knapper/yellow.png" alt="Yellow"/></a>
+            <a href="#colors_sketch" data-color="#E3A4FF" title="Purple"><img src="knapper/purple.png" alt="Purple"/></a>
+        
+            <!-- Størrelser -->
+    		<a href="#colors_sketch" data-size="10"><img src="knapper/pencil.png" alt="pencil"/></a>
+            <a href="#colors_sketch" data-size="30"><img src="knapper/brush2.png" alt="smallbrush"/></a>
+            <a href="#colors_sketch" data-size="60"><img src="knapper/brush.png" alt="bigbrush"/></a>
+            <a href="#" onclick="save();"><img src="knapper/send.png"/></a>
+                    
+        </div>
+        
+        <canvas id="colors_sketch" width="768" height="1024"></canvas>
+        
+        <script type="text/javascript">
+            $(function() {
+                $.each(['#f00', '#ff0', '#0f0', '#0ff', '#00f', '#f0f', '#000', '#fff'], function() {
+                    $('#colors_demo .tools').append("<a href='#colors_sketch' data-color='" + this + "' style='width: 10px; background: " +                     this + ";'></a> ");
+            });
+            $.each([3, 5, 10, 15], function() {
+                $('#colors_demo .tools').append("<a href='#colors_sketch' data-size='" + this + "' style='background: #ccc'>" + this + "</a>                    ");
+            });
+            $('#colors_sketch').sketch();
+            });
+            
+            function save(){
+                var image = document.getElementById('colors_sketch').toDataURL();
+                console.log(image);
+                $.post('./saveImage.php', {img:image   
+            });
+            setTimeout(function(){
+                window.location.href="./thanks.html";   
+            }, 1000);
+            //window.location.href = "./thanks.html";
+                                          }
+                                           
+            
+</script>
+    
+</body>
+
+</html>
